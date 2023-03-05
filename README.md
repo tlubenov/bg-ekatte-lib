@@ -22,6 +22,19 @@
 
 ## Misk
 
-source bg geo
+Source BG Geo
 
-![alt text](./data/processed/v20230131/srs_ekatte.png "Title")
+![alt text](./data/processed/v20230131/srs_ekatte.png "BG Geo")
+
+
+
+WGS BG GeoObjects
+
+![alt text](./data/processed/v20230131/wgs84_ekatte.png "WGS84 BG Geo")
+
+
+
+BG Ekatte Extent Map
+![alt text](./data/processed/v20230131/wgs84_ekatte_ext.png "WGS84 BG Ext")
+
+
