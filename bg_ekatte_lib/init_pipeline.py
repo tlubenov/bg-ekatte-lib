@@ -14,9 +14,12 @@ def get_bbox_polygon(row):
 
 
 def get_ekatte_df(base_path: str) -> List:
+
     df = pd.read_json(os.path.join(base_path, 'ek_atte.json'))
+
     generation_field = "Дата и час на изготвяне на справката"
     release_field = "Данните са актуални към"
+
     release_date = list(df[df[release_field].notna()][release_field].values)[0]
     generation_date = list(df[df[generation_field].notna()][generation_field].values)[0]
 
@@ -25,7 +28,7 @@ def get_ekatte_df(base_path: str) -> List:
 
     df = df.drop_duplicates()
     df = df.dropna(how='all')
-    df.to_parquet('ekatte.pq', index=False)
+    df.to_parquet('../data/processed/v20230131/ekatte.pq', index=False)
     return [df, generation_date, release_date]
 
 
@@ -35,11 +38,11 @@ def get_ekatte_bbox(base_shape_path: str) -> List:
     gdf.rename(columns={'EKATTE_1': 'ekatte'}, inplace=True)
 
     gdf.plot(figsize=(24, 24), facecolor="none", edgecolor='red', lw=0.9)
-    plt.savefig('srs_ekatte.png')
+    plt.savefig('../data/processed/v20230131/srs_ekatte.png')
 
     gdf_wgs84 = gdf.to_crs("EPSG:4326")
     gdf_wgs84.plot(figsize=(24, 24), facecolor="none", edgecolor='red', lw=0.9)
-    plt.savefig('wgs84_ekatte.png')
+    plt.savefig('../data/processed/v20230131/wgs84_ekatte.png')
 
     gdf_wgs84 = pd.concat([gdf_wgs84, gdf_wgs84.bounds], axis=1)
     gdf_wgs84['ext_geometry'] = gdf_wgs84.apply(lambda row: get_bbox_polygon(row), axis=1)
@@ -47,7 +50,7 @@ def get_ekatte_bbox(base_shape_path: str) -> List:
     gdf_wgs84.rename(columns={'geometry': 'srs_geometry', 'ext_geometry': 'geometry'}, inplace=True)
 
     gdf_wgs84.plot(figsize=(24, 24), facecolor="none", edgecolor='red', lw=0.9)
-    plt.savefig('wgs84_ekatte_ext.png')
+    plt.savefig('../data/processed/v20230131/wgs84_ekatte_ext.png')
 
     del gdf_wgs84["srs_geometry"]
     del gdf_wgs84["minx"]
@@ -55,7 +58,7 @@ def get_ekatte_bbox(base_shape_path: str) -> List:
     del gdf_wgs84["maxx"]
     del gdf_wgs84["maxy"]
 
-    gdf_wgs84.to_feather("ekatte_geo.feather")
+    gdf_wgs84.to_feather("../data/processed/v20230131/ekatte_geo.feather")
     return []
 
 
