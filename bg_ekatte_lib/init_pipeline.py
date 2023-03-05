@@ -37,11 +37,11 @@ def get_ekatte_bbox(base_shape_path: str) -> List:
     gdf = gpd.read_file(base_shape_path)
     gdf.rename(columns={'EKATTE_1': 'ekatte'}, inplace=True)
 
-    gdf.plot(figsize=(12, 12), facecolor="none", edgecolor='red', lw=0.1)
+    gdf.plot(figsize=(12, 12), facecolor="none", edgecolor='red', lw=0.3)
     plt.savefig('../data/processed/v20230131/srs_ekatte.png')
 
     gdf_wgs84 = gdf.to_crs("EPSG:4326")
-    gdf_wgs84.plot(figsize=(12, 12), facecolor="none", edgecolor='red', lw=0.1)
+    gdf_wgs84.plot(figsize=(12, 12), facecolor="none", edgecolor='red', lw=0.3)
     plt.savefig('../data/processed/v20230131/wgs84_ekatte.png')
 
     gdf_wgs84 = pd.concat([gdf_wgs84, gdf_wgs84.bounds], axis=1)
@@ -49,8 +49,6 @@ def get_ekatte_bbox(base_shape_path: str) -> List:
 
     gdf_wgs84.rename(columns={'geometry': 'srs_geometry', 'ext_geometry': 'geometry'}, inplace=True)
 
-    gdf_wgs84.plot(figsize=(12, 12), facecolor="none", edgecolor='red', lw=0.1)
-    plt.savefig('../data/processed/v20230131/wgs84_ekatte_ext.png')
 
     del gdf_wgs84["srs_geometry"]
     del gdf_wgs84["minx"]
@@ -58,7 +56,13 @@ def get_ekatte_bbox(base_shape_path: str) -> List:
     del gdf_wgs84["maxx"]
     del gdf_wgs84["maxy"]
 
+    gdf_wgs84.set_crs("EPSG:4326", inplace=True)
     gdf_wgs84.to_feather("../data/processed/v20230131/ekatte_geo.feather")
+
+    gdf_3857 = gdf_wgs84.to_crs("EPSG:3857")
+    gdf_3857.plot(figsize=(12, 12), facecolor="none", edgecolor='red', lw=0.3)
+    plt.savefig('../data/processed/v20230131/wgs84_ekatte_ext.png')
+
     return []
 
 
