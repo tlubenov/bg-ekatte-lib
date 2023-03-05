@@ -9,6 +9,10 @@ packages = [{include = "bg_ekatte_lib"}]
 [tool.poetry.dependencies]
 python = "^3.8"
 pandas = "^1.5.3"
+geopandas = "^0.12.2"
+pyproj = "^3.4.1"
+shapely = "^2.0.1"
+fiona = "^1.9.1"
 
 [tool.poetry.group.dev.dependencies]
 jupyterlab = "^3.6.1"
